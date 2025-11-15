@@ -1,5 +1,6 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Master DevOps | Cloud Infra, Automation & Freelancing",
@@ -18,6 +19,8 @@ export const metadata: Metadata = {
     "CI/CD pipelines",
     "infrastructure as code",
     "cloud infrastructure setup",
+    "DevOps automation",
+    "on-prem DevOps",
   ],
   openGraph: {
     title: "Master DevOps | Cloud Infra & Automation",
@@ -34,3 +37,18 @@ export const metadata: Metadata = {
       "DevOps freelancing, infrastructure design, and automation with Kubernetes, Terraform, and GitHub Actions.",
   },
 };
+
+type RootLayoutProps = {
+  children: React.ReactNode;
+};
+
+// ✅ Required default export for App Router root layout
+export default function RootLayout({ children }: RootLayoutProps) {
+  return (
+    <html lang="en">
+      <body className="bg-cyber-darker text-white antialiased">
+        {children}
+      </body>
+    </html>
+  );
+}
