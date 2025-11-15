@@ -1,6 +1,9 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "Master DevOps | Cloud Infra, Automation & Freelancing",
@@ -42,12 +45,30 @@ type RootLayoutProps = {
   children: React.ReactNode;
 };
 
-// ✅ Required default export for App Router root layout
+const GA_ID = "G-JY0LRM9996";
+
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className="bg-cyber-darker text-white antialiased">
-        {children}
+      <head>
+        {/* Google tag (gtag.js) */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga-gtag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+        </Script>
+      </head>
+      <body className="relative min-h-screen flex flex-col bg-gradient-to-br from-cyber-darker via-cyber-dark to-cyber-darker">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );
