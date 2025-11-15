@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: "export",          // static export
+  trailingSlash: true,       // so routes work nicely on GitHub Pages
   images: {
-    unoptimized: true,
+    unoptimized: true,       // important for export
   },
-  trailingSlash: true,
 };
 
 export default nextConfig;

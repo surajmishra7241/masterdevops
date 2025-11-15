@@ -1,8 +1,13 @@
-export default function HomePage() {
+import HeroSection from "../components/landing/HeroSection";
+import ServicesSection from "../components/landing/ServicesSection";
+import ContactForm from "../components/landing/ContactForm";
+
+export default function Page() {
   return (
-    <main className="text-white">
-      <h1 className="text-4xl font-bold">Master DevOps</h1>
-      <p>Welcome to the platform!</p>
+    <main className="min-h-screen bg-cyber-darker text-white">
+      <HeroSection />
+      <ServicesSection />
+      <ContactForm />
     </main>
   );
 }

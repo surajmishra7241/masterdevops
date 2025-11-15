@@ -1,40 +1,256 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-* {
-  margin: 0;
-  padding: 0;
+/* ---------- Global Reset / Base ---------- */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  min-height: 100%;
 }
 
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
-  background: linear-gradient(135deg, #0a0a0f 0%, #111118 100%);
-  color: #ffffff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  overflow-x: hidden;
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Inter", "Roboto", "Segoe UI", sans-serif;
+  background-color: #050509;
+  background-image:
+    linear-gradient(
+      135deg,
+      rgba(10, 10, 15, 1) 0%,
+      rgba(11, 11, 19, 1) 40%,
+      rgba(5, 5, 9, 1) 100%
+    ),
+    radial-gradient(circle at top left, rgba(0, 212, 255, 0.18), transparent 55%),
+    radial-gradient(circle at top right, rgba(181, 55, 255, 0.22), transparent 55%),
+    radial-gradient(circle at bottom left, rgba(0, 255, 255, 0.17), transparent 60%),
+    radial-gradient(circle at bottom right, rgba(255, 0, 110, 0.16), transparent 60%);
+  background-blend-mode: normal, screen;
+  color: #f9fafb;
 }
 
-::selection {
-  background: rgba(0, 212, 255, 0.3);
-  color: #ffffff;
+/* Make the Next.js root stretch full height */
+#__next,
+:root {
+  height: 100%;
 }
+
+/* ---------- Utility Helpers ---------- */
+
+/* Futuristic glass panels – used by GlassCard and forms */
+.glass-card {
+  background: rgba(11, 11, 19, 0.78);
+  border-radius: 1.75rem;
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  box-shadow:
+    0 0 20px rgba(0, 212, 255, 0.4),
+    0 0 40px rgba(181, 55, 255, 0.35);
+  backdrop-filter: blur(26px) saturate(140%);
+}
+
+/* Slightly lighter panel for controls */
+.glass-subtle {
+  background: rgba(12, 12, 24, 0.82);
+  border-radius: 1.35rem;
+  border: 1px solid rgba(0, 255, 255, 0.28);
+  box-shadow:
+    0 0 14px rgba(0, 255, 255, 0.35),
+    0 0 28px rgba(181, 55, 255, 0.28);
+  backdrop-filter: blur(18px) saturate(130%);
+}
+
+/* Neon border ring for focus states / highlights */
+.neon-border {
+  border: 1px solid rgba(0, 255, 255, 0.9);
+  box-shadow:
+    0 0 6px rgba(0, 255, 255, 0.8),
+    0 0 18px rgba(181, 55, 255, 0.75);
+}
+
+/* High emphasis glowing text from logo + hero title */
+.neon-text {
+  background: linear-gradient(
+    90deg,
+    #ff006e 0%,
+    #b537ff 40%,
+    #00d4ff 70%,
+    #00ffff 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow:
+    0 0 22px rgba(0, 255, 255, 0.9),
+    0 0 45px rgba(181, 55, 255, 0.9);
+}
+
+/* Apply this to headings you already mark with animate-glow */
+.animate-glow {
+  animation: glow 2.2s ease-in-out infinite alternate;
+}
+
+/* Slow pulsing aura – used behind hero holographic background */
+.animate-pulse-slow {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Gentle floating for logos / badges */
+.float-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+/* Circular orbit for holograms */
+.orbit-slow {
+  animation: orbit 18s linear infinite;
+}
+
+/* Scanline overlay for terminals */
+.scanline-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    transparent 0,
+    rgba(0, 255, 255, 0.12) 2px,
+    transparent 4px
+  );
+  background-size: 100% 6px;
+  mix-blend-mode: screen;
+  opacity: 0.35;
+  pointer-events: none;
+  animation: scanline 4s linear infinite;
+}
+
+/* ---------- Keyframes (match Tailwind extension) ---------- */
+
+@keyframes glow {
+  0% {
+    text-shadow:
+      0 0 10px rgba(0, 255, 255, 0.75),
+      0 0 22px rgba(0, 212, 255, 0.7);
+  }
+  100% {
+    text-shadow:
+      0 0 18px rgba(181, 55, 255, 0.95),
+      0 0 40px rgba(255, 0, 110, 0.9);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(140px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(140px) rotate(-360deg);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* ---------- Forms / Inputs (used in ContactForm) ---------- */
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea,
+select {
+  background-color: rgba(5, 5, 14, 0.9);
+  border-radius: 0.85rem;
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  color: #f9fafb;
+  transition:
+    border-color 0.18s ease-out,
+    box-shadow 0.18s ease-out,
+    background-color 0.18s ease-out;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(148, 163, 184, 0.8);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: rgba(0, 255, 255, 0.85);
+  box-shadow:
+    0 0 10px rgba(0, 255, 255, 0.8),
+    0 0 26px rgba(181, 55, 255, 0.5);
+  background-color: rgba(7, 7, 18, 0.98);
+}
+
+/* ---------- Scrollbar styling (desktop) ---------- */
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0f;
+  background: rgba(5, 5, 12, 0.9);
 }
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #00d4ff, #b537ff);
-  border-radius: 5px;
+  border-radius: 999px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #00ffff, #ff006e);
+/* ---------- Utility: section max width ---------- */
+
+.section-container {
+  max-width: 1120px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Keep anchors neon on hover globally */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  color: #00ffff;
 }
