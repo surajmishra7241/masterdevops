@@ -9,34 +9,50 @@ export default function ContactForm() {
     email: "",
     message: "",
     service: "AWS",
+    timeline: "",
   });
 
   const [status, setStatus] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("Sending...");
+    setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/contact", {
+      // Get API URL from environment variable
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.masterdevops.in";
+      
+      const response = await fetch(`${apiUrl}/api/contact`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        setStatus("Message sent successfully. Expect a response within 24 hours.");
+        setStatus("✅ Message sent successfully! Expect a response within 24 hours.");
         setFormData({
           name: "",
           email: "",
           message: "",
           service: "AWS",
+          timeline: "",
         });
+        
+        setTimeout(() => setStatus(""), 5000);
       } else {
-        setStatus("Failed to send message. Please try again.");
+        setStatus(`❌ ${data.error || "Failed to send message. Please try again."}`);
       }
     } catch (error) {
-      setStatus("Error sending message. Please try again.");
+      console.error("Error:", error);
+      setStatus("❌ Error sending message. Please check your connection and try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -55,11 +71,7 @@ export default function ContactForm() {
           transition={{ duration: 0.7 }}
           className="text-center mb-10"
         >
-          <h2 className="
-            text-3xl md:text-4xl font-extrabold mb-3 
-            text-neon-cyan 
-            drop-shadow-[0_0_10px_rgba(0,255,255,0.9)]
-            ">
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-3 text-neon-cyan drop-shadow-[0_0_10px_rgba(0,255,255,0.9)]">
             Launch Your DevOps Platform
           </h2>
           <p className="text-gray-300 max-w-2xl mx-auto text-sm md:text-base">
@@ -76,11 +88,9 @@ export default function ContactForm() {
           transition={{ duration: 0.7, delay: 0.15 }}
           className="relative glass-card border-neon-purple/40 shadow-neon-lg px-6 py-6 md:px-8 md:py-8"
         >
-          {/* Scanline & halo */}
           <div className="scanline-overlay" />
           <div className="pointer-events-none absolute -inset-24 bg-gradient-to-br from-neon-blue/10 via-neon-purple/10 to-neon-pink/10 opacity-60" />
 
-          {/* Header row */}
           <div className="relative mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div className="text-left">
               <p className="text-xs uppercase tracking-[0.28em] text-neon-cyan/80">
@@ -96,7 +106,6 @@ export default function ContactForm() {
             </div>
           </div>
 
-          {/* Form grid */}
           <div className="relative grid gap-6 md:grid-cols-2">
             <div>
               <label className="block text-neon-cyan mb-2 text-sm font-semibold">
@@ -111,6 +120,7 @@ export default function ContactForm() {
                 }
                 className="w-full px-4 py-3 bg-cyber-darker/80 border border-neon-blue/40 rounded-lg text-white focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/40 transition-all placeholder:text-gray-500"
                 placeholder="Your name"
+                disabled={isSubmitting}
               />
             </div>
 
@@ -127,6 +137,7 @@ export default function ContactForm() {
                 }
                 className="w-full px-4 py-3 bg-cyber-darker/80 border border-neon-blue/40 rounded-lg text-white focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/40 transition-all placeholder:text-gray-500"
                 placeholder="you@example.com"
+                disabled={isSubmitting}
               />
             </div>
 
@@ -140,6 +151,7 @@ export default function ContactForm() {
                   setFormData({ ...formData, service: e.target.value })
                 }
                 className="w-full px-4 py-3 bg-cyber-darker/80 border border-neon-blue/40 rounded-lg text-white focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/40 transition-all"
+                disabled={isSubmitting}
               >
                 <option value="AWS">AWS Infra Setup</option>
                 <option value="GCP">GCP Infra Setup</option>
@@ -158,8 +170,13 @@ export default function ContactForm() {
               </label>
               <input
                 type="text"
+                value={formData.timeline}
+                onChange={(e) =>
+                  setFormData({ ...formData, timeline: e.target.value })
+                }
                 placeholder="e.g. 2–4 weeks, ASAP, Q1 2026"
                 className="w-full px-4 py-3 bg-cyber-darker/80 border border-neon-blue/40 rounded-lg text-white focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/40 transition-all placeholder:text-gray-500"
+                disabled={isSubmitting}
               />
             </div>
 
@@ -176,26 +193,33 @@ export default function ContactForm() {
                 }
                 className="w-full px-4 py-3 bg-cyber-darker/80 border border-neon-blue/40 rounded-lg text-white focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/40 transition-all resize-none placeholder:text-gray-500"
                 placeholder="Current stack, environments (dev/stage/prod), cloud provider, traffic scale, main pain points..."
+                disabled={isSubmitting}
               />
             </div>
           </div>
 
-          {/* Submit row */}
           <div className="relative mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <motion.button
               type="submit"
-              whileHover={{ scale: 1.02, y: -1 }}
-              whileTap={{ scale: 0.96 }}
-              className="w-full md:w-auto px-10 py-3.5 rounded-xl bg-gradient-to-r from-neon-pink via-neon-purple to-neon-cyan font-semibold text-white shadow-neon-lg hover:shadow-neon-lg/80 transition-shadow"
+              disabled={isSubmitting}
+              whileHover={!isSubmitting ? { scale: 1.02, y: -1 } : {}}
+              whileTap={!isSubmitting ? { scale: 0.96 } : {}}
+              className={`w-full md:w-auto px-10 py-3.5 rounded-xl bg-gradient-to-r from-neon-pink via-neon-purple to-neon-cyan font-semibold text-white shadow-neon-lg hover:shadow-neon-lg/80 transition-shadow ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              Send Request
+              {isSubmitting ? "Sending..." : "Send Request"}
             </motion.button>
 
             {status && (
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-sm text-neon-cyan/80"
+                className={`text-sm ${
+                  status.includes("✅") ? "text-emerald-400" : 
+                  status.includes("❌") ? "text-red-400" : 
+                  "text-neon-cyan/80"
+                }`}
               >
                 {status}
               </motion.p>

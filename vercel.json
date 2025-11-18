@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    }
+  ],
+  "env": {
+    "MONGO_URI": "@mongo-uri",
+    "REDIS_URL": "@redis-url",
+    "SMTP_HOST": "@smtp-host",
+    "SMTP_PORT": "@smtp-port",
+    "SMTP_USER": "@smtp-user",
+    "SMTP_PASS": "@smtp-pass",
+    "SMTP_FROM": "@smtp-from",
+    "GOOGLE_SHEETS_ID": "@google-sheets-id",
+    "GOOGLE_SERVICE_ACCOUNT_EMAIL": "@google-service-account-email",
+    "GOOGLE_PRIVATE_KEY": "@google-private-key",
+    "RATE_LIMIT_WINDOW": "3600",
+    "RATE_LIMIT_MAX": "5",
+    "CRON_SECRET": "@cron-secret",
+    "NEXT_PUBLIC_FRONTEND_URL": "https://masterdevops.in"
+  }
+}
