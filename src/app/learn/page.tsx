@@ -1,90 +1,126 @@
+// src/app/learn/page.tsx
+
 'use client';
-import { motion } from 'framer-motion';
-import GlassCard from '@/src/components/ui/GlassCard';
+
+import { useState, useEffect } from 'react';
+import SeoMaster from '../../components/SEO/SeoMaster';
+import LearnSidebar from './LearnSidebar';
+import LearnContent from './LearnContent';
+import TechnologyDrawer from './TechnologyDrawer';
 
 export default function LearnPage() {
-  const courses = [
-    {
-      title: 'Docker Fundamentals',
-      level: 'Beginner',
-      duration: '4 weeks',
-      description: 'Learn containerization from scratch with hands-on projects.',
-      topics: ['Container Basics', 'Dockerfile', 'Docker Compose', 'Networking'],
-    },
-    {
-      title: 'Kubernetes Mastery',
-      level: 'Intermediate',
-      duration: '8 weeks',
-      description: 'Master container orchestration and deployment strategies.',
-      topics: ['Pods & Services', 'Deployments', 'Helm', 'Operators'],
-    },
-    {
-      title: 'AWS Cloud Architecture',
-      level: 'Advanced',
-      duration: '12 weeks',
-      description: 'Design and deploy scalable cloud infrastructure on AWS.',
-      topics: ['EC2 & VPC', 'EKS', 'RDS', 'Lambda & Serverless'],
-    },
-  ];
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedTechnology, setSelectedTechnology] = useState<any>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleTechnologyClick = (technology: any) => {
+    setSelectedTechnology(technology);
+    setIsDrawerOpen(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setIsDrawerOpen(false);
+    setSelectedTechnology(null);
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+  };
+
+  if (!mounted) {
+    return (
+      <>
+        <SeoMaster
+          title="Learn DevOps - MasterDevOps"
+          description="Comprehensive DevOps learning platform with Docker, Kubernetes, AWS, CI/CD, Terraform, and more. Start your DevOps journey today."
+          keywords={['learn devops', 'devops course', 'devops tutorial', 'devops learning path']}
+        />
+        <div className="min-h-screen bg-transparent flex items-center justify-center pt-20">
+          <div className="glass-card p-8 text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto mb-4"></div>
+            <p className="text-cyan-300">Loading Learning Platform...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
-    <div className="min-h-screen pt-24 px-6 bg-gradient-to-br from-cyber-darker to-cyber-dark">
-      <div className="container mx-auto max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1 className="text-5xl md:text-6xl font-bold mb-8 text-center bg-gradient-to-r from-neon-blue to-neon-purple bg-clip-text text-transparent">
-            Learn DevOps
-          </h1>
-          <p className="text-xl text-center text-gray-400 mb-12">
-            Master the skills needed to excel in modern DevOps
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {courses.map((course, index) => (
-              <motion.div
-                key={course.title}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.2 }}
-              >
-                <GlassCard className="h-full">
-                  <div className="flex flex-col h-full">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                        course.level === 'Beginner' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
-                        course.level === 'Intermediate' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
-                        'bg-red-500/20 text-red-400 border border-red-500/30'
-                      }`}>
-                        {course.level}
-                      </span>
-                      <span className="text-neon-cyan text-sm">{course.duration}</span>
-                    </div>
-                    
-                    <h3 className="text-2xl font-bold text-neon-cyan mb-3">{course.title}</h3>
-                    <p className="text-gray-400 mb-4 flex-grow">{course.description}</p>
-                    
-                    <div className="space-y-2 mb-6">
-                      {course.topics.map((topic) => (
-                        <div key={topic} className="flex items-center text-sm text-gray-300">
-                          <span className="text-neon-pink mr-2">✓</span>
-                          {topic}
-                        </div>
-                      ))}
-                    </div>
-                    
-                    <button className="w-full px-6 py-3 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg font-semibold hover:scale-105 transition-transform">
-                      Start Learning
-                    </button>
-                  </div>
-                </GlassCard>
-              </motion.div>
-            ))}
+    <>
+      <SeoMaster
+        title="Learn DevOps - MasterDevOps"
+        description="Comprehensive DevOps learning platform with Docker, Kubernetes, AWS, CI/CD, Terraform, and more. Start your DevOps journey today."
+        keywords={['learn devops', 'devops course', 'devops tutorial', 'devops learning path']}
+      />
+      
+      {/* Main content with proper spacing below header */}
+      <div className="min-h-screen bg-transparent pt-20">
+        {/* Mobile Header */}
+        <div className="lg:hidden glass-subtle m-4 rounded-2xl p-4">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={toggleSidebar}
+              className="p-2 rounded-lg bg-cyan-900/30 border border-cyan-500/50 hover:bg-cyan-800/40 transition-all duration-300"
+            >
+              <svg className="w-6 h-6 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <h1 className="text-xl font-bold neon-text">Learn DevOps</h1>
+            <div className="w-10"></div> {/* Spacer for balance */}
           </div>
-        </motion.div>
+        </div>
+
+        <div className="flex">
+          {/* Sidebar */}
+          <div className={`
+            fixed lg:static inset-y-0 left-0 z-40
+            transform transition-transform duration-300 ease-in-out
+            ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+            w-80 lg:w-64 xl:w-80
+          `}>
+            <LearnSidebar 
+              selectedCategory={selectedCategory}
+              onCategoryChange={handleCategoryChange}
+              isMobileOpen={isSidebarOpen}
+              onClose={() => setIsSidebarOpen(false)}
+            />
+          </div>
+
+          {/* Overlay for mobile */}
+          {isSidebarOpen && (
+            <div 
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            />
+          )}
+
+          {/* Main Content */}
+          <div className="flex-1 min-w-0">
+            <LearnContent 
+              selectedCategory={selectedCategory}
+              onTechnologyClick={handleTechnologyClick}
+            />
+          </div>
+        </div>
+
+        {/* Technology Detail Drawer */}
+        <TechnologyDrawer
+          isOpen={isDrawerOpen}
+          onClose={handleCloseDrawer}
+          technology={selectedTechnology}
+        />
       </div>
-    </div>
+    </>
   );
 }

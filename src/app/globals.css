@@ -1,3 +1,5 @@
+/* src/app/globals.css */
+
 @import "tailwindcss";
 @tailwind base;
 @tailwind components;
@@ -39,6 +41,7 @@ body {
     radial-gradient(circle at bottom left, rgba(0, 255, 255, 0.17), transparent 60%),
     radial-gradient(circle at bottom right, rgba(255, 0, 110, 0.16), transparent 60%);
   background-blend-mode: normal, screen;
+  background-attachment: fixed;
   color: #f9fafb;
 }
 
@@ -52,13 +55,22 @@ body {
 
 /* Futuristic glass panels – used by GlassCard and forms */
 .glass-card {
-  background: rgba(11, 11, 19, 0.78);
+  background: rgba(11, 11, 19, 0.85);
   border-radius: 1.75rem;
   border: 1px solid rgba(0, 212, 255, 0.35);
   box-shadow:
     0 0 20px rgba(0, 212, 255, 0.4),
-    0 0 40px rgba(181, 55, 255, 0.35);
+    0 0 40px rgba(181, 55, 255, 0.35),
+    inset 0 0 60px rgba(0, 212, 255, 0.05);
   backdrop-filter: blur(26px) saturate(140%);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  box-shadow:
+    0 0 30px rgba(0, 212, 255, 0.5),
+    0 0 50px rgba(181, 55, 255, 0.45),
+    inset 0 0 80px rgba(0, 212, 255, 0.08);
 }
 
 /* Slightly lighter panel for controls */
@@ -70,14 +82,24 @@ body {
     0 0 14px rgba(0, 255, 255, 0.35),
     0 0 28px rgba(181, 55, 255, 0.28);
   backdrop-filter: blur(18px) saturate(130%);
+  transition: all 0.3s ease;
+}
+
+.glass-subtle:hover {
+  border-color: rgba(0, 255, 255, 0.4);
+  box-shadow:
+    0 0 18px rgba(0, 255, 255, 0.45),
+    0 0 35px rgba(181, 55, 255, 0.35);
 }
 
 /* Neon border ring for focus states / highlights */
 .neon-border {
-  border: 1px solid rgba(0, 255, 255, 0.9);
+  border: 1.5px solid rgba(0, 255, 255, 0.9);
   box-shadow:
-    0 0 6px rgba(0, 255, 255, 0.8),
-    0 0 18px rgba(181, 55, 255, 0.75);
+    0 0 8px rgba(0, 255, 255, 0.8),
+    0 0 20px rgba(181, 55, 255, 0.75),
+    inset 0 0 20px rgba(0, 255, 255, 0.1);
+  animation: neonPulse 2s ease-in-out infinite;
 }
 
 /* High emphasis glowing text from logo + hero title */
@@ -85,8 +107,8 @@ body {
   background: linear-gradient(
     90deg,
     #ff006e 0%,
-    #b537ff 40%,
-    #00d4ff 70%,
+    #b537ff 30%,
+    #00d4ff 60%,
     #00ffff 100%
   );
   -webkit-background-clip: text;
@@ -95,11 +117,12 @@ body {
   text-shadow:
     0 0 22px rgba(0, 255, 255, 0.9),
     0 0 45px rgba(181, 55, 255, 0.9);
+  background-size: 200% 100%;
 }
 
 /* Apply this to headings you already mark with animate-glow */
 .animate-glow {
-  animation: glow 2.2s ease-in-out infinite alternate;
+  animation: glow 3s ease-in-out infinite alternate, gradientShift 8s ease infinite;
 }
 
 /* Slow pulsing aura – used behind hero holographic background */
@@ -133,18 +156,92 @@ body {
   animation: scanline 4s linear infinite;
 }
 
+/* Hologram card for roadmap items */
+.hologram-card {
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 1.5rem;
+  backdrop-filter: blur(28px) saturate(130%);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  box-shadow: 
+    0 0 30px 2px rgba(0, 255, 255, 0.25), 
+    0 0 45px 0px rgba(181, 55, 255, 0.2),
+    0 0 100px 15px rgba(0, 255, 255, 0.08),
+    inset 0 0 40px rgba(0, 212, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.hologram-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(0, 255, 255, 0.03),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: shimmer 3s infinite;
+}
+
+.hologram-card:hover {
+  border-color: rgba(0, 255, 255, 0.6);
+  box-shadow: 
+    0 0 40px 4px rgba(0, 255, 255, 0.35), 
+    0 0 60px 2px rgba(181, 55, 255, 0.3),
+    0 0 120px 20px rgba(0, 255, 255, 0.12),
+    inset 0 0 60px rgba(0, 212, 255, 0.08);
+  transform: translateY(-4px);
+}
+
+.hologram-badge {
+  background: linear-gradient(135deg, #00fff0dd 0%, #b537fff3 68%, #19192766 100%);
+  color: #fff;
+  border: 1.2px solid rgba(0, 212, 255, 0.4);
+  text-shadow: 0 0 3px rgba(181, 55, 255, 0.8), 0 0 6px rgba(47, 247, 255, 0.6);
+  font-weight: 600;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.roadmap-arrow {
+  filter: drop-shadow(0 0 12px #00e9ff) blur(0.5px);
+  opacity: 0.85;
+  transition: all 0.3s ease;
+}
+
+.roadmap-arrow:hover {
+  filter: drop-shadow(0 0 20px #00e9ff) blur(0px);
+  opacity: 1;
+}
+
 /* ---------- Keyframes (match Tailwind extension) ---------- */
 
 @keyframes glow {
   0% {
     text-shadow:
       0 0 10px rgba(0, 255, 255, 0.75),
-      0 0 22px rgba(0, 212, 255, 0.7);
+      0 0 22px rgba(0, 212, 255, 0.7),
+      0 0 35px rgba(0, 212, 255, 0.5);
   }
   100% {
     text-shadow:
       0 0 18px rgba(181, 55, 255, 0.95),
-      0 0 40px rgba(255, 0, 110, 0.9);
+      0 0 40px rgba(255, 0, 110, 0.9),
+      0 0 55px rgba(255, 0, 110, 0.6);
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
 
@@ -186,6 +283,30 @@ body {
   }
 }
 
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 8px rgba(0, 255, 255, 0.8),
+      0 0 20px rgba(181, 55, 255, 0.75),
+      inset 0 0 20px rgba(0, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 12px rgba(0, 255, 255, 1),
+      0 0 30px rgba(181, 55, 255, 0.9),
+      inset 0 0 30px rgba(0, 255, 255, 0.15);
+  }
+}
+
 /* ---------- Forms / Inputs (used in ContactForm) ---------- */
 
 input[type="text"],
@@ -223,26 +344,40 @@ select:focus {
 /* ---------- Scrollbar styling (desktop) ---------- */
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
   background: rgba(5, 5, 12, 0.9);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #00d4ff, #b537ff);
-  border-radius: 999px;
+  border-radius: 10px;
+  border: 2px solid rgba(5, 5, 12, 0.9);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #00e9ff, #c850ff);
 }
 
 /* ---------- Utility: section max width ---------- */
 
 .section-container {
-  max-width: 1120px;
+  max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .section-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 /* Keep anchors neon on hover globally */
@@ -253,4 +388,58 @@ a {
 
 a:hover {
   color: #00ffff;
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Smooth transitions for all interactive elements */
+button,
+a,
+input,
+textarea,
+select {
+  transition: all 0.2s ease;
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+  outline: 2px solid rgba(0, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .glass-card,
+  .glass-subtle {
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

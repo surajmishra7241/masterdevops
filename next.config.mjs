@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export', // Enable for GitHub Pages
+  output: 'export',
   images: {
     unoptimized: true,
   },
@@ -8,9 +8,7 @@ const nextConfig = {
   assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
   trailingSlash: true,
   reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // Remove the eslint section as it's deprecated
   typescript: {
     ignoreBuildErrors: true,
   },
