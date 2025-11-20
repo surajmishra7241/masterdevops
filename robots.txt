@@ -1,4 +1,35 @@
 User-agent: *
 Allow: /
 
+# Sitemaps
 Sitemap: https://masterdevops.in/sitemap.xml
+
+# Allow all important pages
+Allow: /learn/
+Allow: /jobs/
+Allow: /interview-preparation/
+Allow: /certifications/
+Allow: /projects/
+Allow: /docs/
+Allow: /blog/
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+
+# Crawl delay (be respectful to server)
+Crawl-delay: 1
+
+# Specific bot instructions
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
